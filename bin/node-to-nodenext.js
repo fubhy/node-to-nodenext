@@ -30,6 +30,7 @@ function transformFile(file) {
   return run(transform, [file], {
     extensions: ["ts", "tsx"].join(","),
     parser: "tsx",
+    verbose: process.env.DEBUG !== undefined ? 2 : 0,
   });
 }
 
@@ -43,5 +44,6 @@ function transformDirectory(dir) {
   return run(transform, paths, {
     extensions: ["ts", "tsx"].join(","),
     parser: "tsx",
+    verbose: process.env.DEBUG !== undefined ? 2 : 0,
   });
 }

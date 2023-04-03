@@ -44,11 +44,12 @@ export default function transformer(file: FileInfo, api: API) {
 
   return j(file.source)
     .find(j.Declaration, (node) => {
-      return (
+      const match =
         j.ImportDeclaration.check(node) ||
         j.ExportNamedDeclaration.check(node) ||
-        j.ExportAllDeclaration.check(node)
-      );
+        j.ExportAllDeclaration.check(node);
+
+      return match && node.source !== null;
     })
     .filter((p) => {
       const node = p.node as
