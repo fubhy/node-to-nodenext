@@ -16,7 +16,11 @@ const resolver = ResolverFactory.createResolver({
 });
 
 function isRelativePath(modulePath: string) {
-  return modulePath.startsWith("./") || modulePath.startsWith("../");
+  return (
+    modulePath === ".." ||
+    modulePath.startsWith("./") ||
+    modulePath.startsWith("../")
+  );
 }
 
 function hasNoJsExtension(modulePath: string) {
