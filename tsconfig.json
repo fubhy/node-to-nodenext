@@ -1,0 +1,13 @@
+{
+  "include": ["src"],
+  "exclude": ["src/**/*.test.ts", "**/__tests__", "**/__testfixtures__"],
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "types": ["node"],
+    "module": "CommonJS",
+    "target": "ES2021",
+    "moduleResolution": "NodeNext",
+    "allowSyntheticDefaultImports": true
+  }
+}
