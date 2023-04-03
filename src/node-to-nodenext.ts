@@ -17,6 +17,7 @@ const resolver = ResolverFactory.createResolver({
 
 function isRelativePath(modulePath: string) {
   return (
+    modulePath === "." ||
     modulePath === ".." ||
     modulePath.startsWith("./") ||
     modulePath.startsWith("../")
