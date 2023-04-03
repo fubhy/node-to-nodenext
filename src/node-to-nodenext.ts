@@ -1,4 +1,10 @@
-import { API, FileInfo } from "jscodeshift";
+import {
+  API,
+  ExportAllDeclaration,
+  ExportNamedDeclaration,
+  FileInfo,
+  ImportDeclaration,
+} from "jscodeshift";
 import { ResolverFactory, CachedInputFileSystem } from "enhanced-resolve";
 import * as fs from "node:fs";
 import * as path from "node:path";
@@ -37,21 +43,37 @@ export default function transformer(file: FileInfo, api: API) {
   const j = api.jscodeshift;
 
   return j(file.source)
-    .find(j.ImportDeclaration, (value) => {
-      if (typeof value.source.value !== "string") {
-        return false;
-      }
-
+    .find(j.Declaration, (node) => {
       return (
-        isRelativePath(value.source.value) &&
-        hasNoJsExtension(value.source.value)
+        j.ImportDeclaration.check(node) ||
+        j.ExportNamedDeclaration.check(node) ||
+        j.ExportAllDeclaration.check(node)
       );
     })
+    .filter((p) => {
+      const node = p.node as
+        | ImportDeclaration
+        | ExportNamedDeclaration
+        | ExportAllDeclaration;
+
+      const source = node.source.value;
+      if (typeof source === "string") {
+        return isRelativePath(source) && hasNoJsExtension(source);
+      } else {
+        return false;
+      }
+    })
     .replaceWith((p) => {
-      const source = p.node.source.value as string;
+      const node = p.node as
+        | ImportDeclaration
+        | ExportNamedDeclaration
+        | ExportAllDeclaration;
+
+      const source = node.source.value as string;
       const resolved = resolveModule(source as string, file);
+
       if (resolved !== null) {
-        p.node.source.value = resolved;
+        node.source.value = resolved;
       } else {
         console.log(`Skipping rewrite for ${source} in ${file.path}`);
       }
