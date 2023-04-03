@@ -1,6 +1,6 @@
 {
   "name": "node-to-nodenext",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -16,10 +16,12 @@
     "build": "tsc"
   },
   "dependencies": {
-    "jscodeshift": "^0.14.0",
-    "enhanced-resolve": "^5.12.0"
+    "enhanced-resolve": "^5.12.0",
+    "glob": "^9.3.4",
+    "jscodeshift": "^0.14.0"
   },
   "devDependencies": {
+    "@types/glob": "^8.1.0",
     "@types/jscodeshift": "^0.11.6",
     "@types/node": "^18.15.11",
     "typescript": "^5.0.3",
